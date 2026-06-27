@@ -380,7 +380,7 @@ class Node:
             return None
 
         elif load_type == "error":
-            raise TrackLoadError(f"{data['message']} [{data['severity']}]")
+            raise TrackLoadError(f"{data['message']} [{data['severity']}]", data=data)
 
         elif load_type in ("playlist", "recommendations"):
             return Playlist(playlist_info=data["info"], tracks=data["tracks"], requester=requester)

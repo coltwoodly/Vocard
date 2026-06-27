@@ -59,7 +59,9 @@ class TrackInvalidPosition(VoicelinkException):
 
 class TrackLoadError(VoicelinkException):
     """There was an error while loading a track."""
-    pass
+    def __init__(self, message: str, data: dict = None):
+        super().__init__(message)
+        self.data = data or {}
 
 
 class FilterInvalidArgument(VoicelinkException):

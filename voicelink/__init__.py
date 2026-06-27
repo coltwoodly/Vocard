@@ -40,3 +40,4 @@ from .mongodb import MongoDBHandler
 from .language import LangHandler
 from .lyrics import LYRICS_PLATFORMS
 from .ipc import IPCClient
+from .error_mapping import map_error

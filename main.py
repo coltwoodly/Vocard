@@ -31,7 +31,7 @@ import function as func
 
 from discord.ext import commands
 from logging.handlers import TimedRotatingFileHandler
-from voicelink import Config, LangHandler, MongoDBHandler, IPCClient, VoicelinkException
+from voicelink import Config, LangHandler, MongoDBHandler, IPCClient, VoicelinkException, TrackLoadError, map_error
 from voicelink.utils import dispatch_message
 
 class Translator(discord.app_commands.Translator):
@@ -172,6 +172,11 @@ class Vocard(commands.Bot):
             embed = discord.Embed(description=description, color=bot_config.embed_color)
             embed.set_footer(icon_url=ctx.me.display_avatar.url, text=f"More Help: {bot_config.invite_link}")
             return await ctx.reply(embed=embed)
+
+        elif isinstance(error, TrackLoadError):
+            embed = map_error(error.data)
+            if embed:
+                return await ctx.reply(embed=embed, ephemeral=True)
 
         elif not issubclass(error.__class__, VoicelinkException):
             error = await Lang_handler.get_lang(ctx.guild.id, "common.errors.unknown") + bot_config.invite_link
