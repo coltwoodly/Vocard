@@ -33,6 +33,18 @@ ERROR_MAP: List[tuple] = [
         "YouTube changed their playback encryption.\n\n"
         "This video can't currently be streamed."
     )),
+    (["video player configuration"], ErrorResponse(
+        "YouTube Error",
+        "YouTube returned a player configuration error.\n\n"
+        "This usually means YouTube changed something on their end "
+        "or the video format is not supported."
+    )),
+    (["all clients failed"], ErrorResponse(
+        "Playback Failure",
+        "All available YouTube clients failed to load this video.\n\n"
+        "This is a known limitation with the current YouTube plugin. "
+        "Try a different source or another upload of the same song."
+    )),
     (["video unavailable", "this video is unavailable"], ErrorResponse(
         "Video Unavailable",
         "This video is unavailable. It may be private, deleted, "

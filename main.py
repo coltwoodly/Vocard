@@ -188,6 +188,29 @@ class Vocard(commands.Bot):
             pass
 
 class CommandCheck(discord.app_commands.CommandTree):
+    async def on_error(self, interaction: discord.Interaction, error: Exception, /) -> None:
+        error = getattr(error, 'original', error)
+
+        if isinstance(error, TrackLoadError):
+            embed = map_error(error.data)
+            if embed:
+                try:
+                    if interaction.response.is_done():
+                        await interaction.followup.send(embed=embed, ephemeral=True)
+                    else:
+                        await interaction.response.send_message(embed=embed, ephemeral=True)
+                except:
+                    pass
+                return
+
+        try:
+            if interaction.response.is_done():
+                await interaction.followup.send(str(error), ephemeral=True)
+            else:
+                await interaction.response.send_message(str(error), ephemeral=True)
+        except:
+            pass
+
     async def interaction_check(self, interaction: discord.Interaction, /) -> bool:
         if interaction.type == discord.InteractionType.application_command:
             if not interaction.guild:
