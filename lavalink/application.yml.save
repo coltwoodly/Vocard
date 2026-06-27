@@ -30,10 +30,7 @@ plugins:
       - ANDROID_VR
       - TV
       - TVHTML5EMBEDDED
-      - WEBEMBEDDED
-      - IOS
-      - ANDROID
-      - ANDROID_MUSIC
+
 
 logging:
   level:
