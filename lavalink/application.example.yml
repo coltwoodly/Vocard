@@ -23,17 +23,15 @@ plugins:
     allowSearch: true
     allowDirectVideoIds: true
     allowDirectPlaylistIds: true
+    oauth:
+      enabled: true
+      refreshToken: "YOUR_YOUTUBE_REFRESH_TOKEN"
+      skipInitialization: true
     clients:
-      - MUSIC
       - WEB
-      - M_WEB
       - ANDROID_VR
-      - TV
-      - TVHTML5EMBEDDED
+      - TVHTML5
       - WEBEMBEDDED
-      - IOS
-      - ANDROID
-      - ANDROID_MUSIC
 
 logging:
   level:
