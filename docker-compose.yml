@@ -1,0 +1,47 @@
+services:
+  vocard:
+    build: .
+    container_name: vocard
+    restart: unless-stopped
+    depends_on:
+      lavalink:
+        condition: service_healthy
+      mongo:
+        condition: service_started
+    volumes:
+      - ./settings.json:/app/settings.json
+      - ./local_langs:/app/local_langs
+    command: >
+      sh -c '
+        until python -c "import socket; socket.create_connection((\"lavalink\", 2333), timeout=2).close()"; do
+          echo "Waiting for Lavalink..."
+          sleep 2
+        done
+        echo "Lavalink is reachable"
+        python -u main.py
+      '
+
+  lavalink:
+    image: ghcr.io/lavalink-devs/lavalink:4
+    container_name: lavalink
+    restart: unless-stopped
+    volumes:
+      - ./lavalink/application.yml:/opt/Lavalink/application.yml
+    healthcheck:
+      test: ["CMD-SHELL", "bash -c '</dev/tcp/localhost/2333'"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 60s
+  mongo:
+    image: mongo:7
+    container_name: vocard-mongo
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: admin
+    volumes:
+      - mongo-data:/data/db
+
+volumes:
+  mongo-data:
